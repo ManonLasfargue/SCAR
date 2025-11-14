@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SCAR – Carbon Footprint Estimator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --primary: #2e7d32;
+      --secondary: #1b5e20;
+      --overlay: rgba(0, 0, 0, 0.65);
+      --card-bg: rgba(255, 255, 255, 0.96);
+    }
+
+    body {
+      font-family: "Roboto Slab", serif;
+      margin: 0;
+   background-image: url("../static/scar.png");
+      background-size: cover;
+      background-position: center center;
+      background-attachment: fixed;
+      color: #1a1a1a;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: var(--overlay);
+      z-index: 0;
+    }
+
+    header {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      color: white;
+      padding: 100px 20px 60px;
+      background: transparent;
+      text-shadow: 0 3px 15px rgba(0, 0, 0, 0.5);
+      animation: fadeDown 1s ease;
+    }
+
+    header h1 {
+      font-size: 2.8rem;
+      margin-bottom: 15px;
+    }
+
+    header p {
+      font-size: 1.15rem;
+      color: #e8f5e9;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 60px auto 100px;
+      background: var(--card-bg);
+      padding: 50px 60px;
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      backdrop-filter: blur(6px);
+      animation: fadeIn 1s ease;
+    }
+
+    h2.section-title {
+      color: var(--secondary);
+      border-left: 5px solid var(--primary);
+      padding-left: 10px;
+      margin-top: 50px;
+      margin-bottom: 15px;
+      font-size: 1.4rem;
+    }
+
+    label {
+      display: block;
+      margin: 12px 0 4px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: #222;
+    }
+
+    input[type="number"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background-color: #fff;
+    }
+
+    input[type="number"]:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(46,125,50,0.15);
+      outline: none;
+    }
+
+    input[type="number"]:hover {
+      border-color: var(--secondary);
+    }
+
+    button {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 16px 35px;
+      font-size: 1.15rem;
+      font-weight: 600;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: block;
+      margin: 40px auto 0;
+    }
+
+    button:hover {
+      background-color: var(--secondary);
+      transform: translateY(-3px);
+    }
+
+    footer {
+      text-align: center;
+      color: white;
+      font-size: 0.9rem;
+      margin-bottom: 40px;
+      opacity: 0.8;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeDown {
+      from { opacity: 0; transform: translateY(-40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>SCAR – Carbon Footprint Estimator</h1>
+    <p>Enter your project data (distances in km, durations in hours, or quantities as indicated)</p>
+  </header>
+
+  <div class="container">
+   <form action="results.html" method="POST">
+
+
+
+      <!-- MOBILITY -->
+      <h2 class="section-title">Mobility (in km)</h2>
+      <label>Short flights</label><input type="number" name="flight_short" placeholder="e.g. 300" min="0">
+      <label>Medium flights</label><input type="number" name="flight_medium" placeholder="e.g. 800" min="0">
+      <label>Long flights</label><input type="number" name="flight_long" placeholder="e.g. 3000" min="0">
+      <label>Train (TGV)</label><input type="number" name="train_tgv" placeholder="e.g. 500" min="0">
+      <label>Train (TER)</label><input type="number" name="train_ter" placeholder="e.g. 300" min="0">
+      <label>Car (Diesel)</label><input type="number" name="car_diesel" placeholder="e.g. 200" min="0">
+      <label>Car (Petrol)</label><input type="number" name="car_essence" placeholder="e.g. 200" min="0">
+      <label>Carpool</label><input type="number" name="carpool" placeholder="e.g. 200" min="0">
+      <label>Bus</label><input type="number" name="bus" placeholder="e.g. 100" min="0">
+      <label>Metro</label><input type="number" name="metro" placeholder="e.g. 50" min="0">
+
+      <!-- ENERGY -->
+      <h2 class="section-title">Energy (in kWh)</h2>
+      <label>Electricity</label><input type="number" name="electricity" placeholder="e.g. 100" min="0">
+      <label>Gas</label><input type="number" name="gas" placeholder="e.g. 50" min="0">
+      <label>Fuel oil</label><input type="number" name="fioul" placeholder="e.g. 30" min="0">
+      <label>Heating network</label><input type="number" name="heating_network" placeholder="e.g. 20" min="0">
+
+      <!-- DIGITAL -->
+      <h2 class="section-title">Digital (hours or number of devices)</h2>
+      <label>Laptops (number)</label><input type="number" name="laptops" placeholder="e.g. 3" min="0">
+      <label>Desktops (number)</label><input type="number" name="desktop" placeholder="e.g. 2" min="0">
+      <label>Screens (number)</label><input type="number" name="screen" placeholder="e.g. 4" min="0">
+      <label>Servers (hours)</label><input type="number" name="server" placeholder="e.g. 10" min="0">
+      <label>Cloud computing (hours)</label><input type="number" name="cloud" placeholder="e.g. 50" min="0">
+      <label>Video conferencing (hours)</label><input type="number" name="video_conf" placeholder="e.g. 10" min="0">
+      <label>Emails sent</label><input type="number" name="email" placeholder="e.g. 100" min="0">
+      <label>Large Language Model usage (hours)</label><input type="number" name="llm_usage" placeholder="e.g. 2" min="0">
+      <label>AI training (hours)</label><input type="number" name="ai_training" placeholder="e.g. 5" min="0">
+
+      <!-- FOOD -->
+      <h2 class="section-title">Food (meals)</h2>
+      <label>Red meat meals</label><input type="number" name="meat_meals" placeholder="e.g. 5" min="0">
+      <label>White meat meals</label><input type="number" name="white_meat_meals" placeholder="e.g. 5" min="0">
+      <label>Vegetarian meals</label><input type="number" name="veg_meals" placeholder="e.g. 5" min="0">
+      <label>Coffee consumed (cups)</label><input type="number" name="coffee" placeholder="e.g. 10" min="0">
+
+      <!-- ACCOMMODATION -->
+      <h2 class="section-title">Accommodation / Events</h2>
+      <label>Hotel nights</label><input type="number" name="hotel_night" placeholder="e.g. 3" min="0">
+      <label>Airbnb nights</label><input type="number" name="airbnb_night" placeholder="e.g. 2" min="0">
+      <label>Conference days</label><input type="number" name="conference_day" placeholder="e.g. 2" min="0">
+      <label>Conference meals</label><input type="number" name="conference_meal" placeholder="e.g. 3" min="0">
+
+      <button type="submit">Calculate Emissions</button>
+    </form>
+  </div>
+
+  <footer>
+    &copy; <span id="year"></span> SCAR — Manon Lasfargue
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+  <script>
+  document.querySelector("form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const formData = {};
+    new FormData(this).forEach((v, k) => formData[k] = v || 0);
+    localStorage.setItem("scarFormData", JSON.stringify(formData));
+    window.location.href = "results.html";
+  });
+</script>
+
+<script>
+  document.querySelector("form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const formData = {};
+    new FormData(this).forEach((v, k) => formData[k] = v || 0);
+    localStorage.setItem("scarFormData", JSON.stringify(formData));
+    window.location.href = "results.html";
+  });
+</script>
+
+</body>
+</html>

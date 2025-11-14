@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SCAR – Results</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root { --primary:#2e7d32; --secondary:#1b5e20; --overlay:rgba(0,0,0,0.65); --card-bg:rgba(255,255,255,0.96); }
+    body {
+      font-family:"Roboto Slab", serif; margin:0;
+     background-image: url("../static/scar.png");
+      background-size:cover; background-position:center; background-attachment:fixed; color:#222;
+    }
+    body::before { content:""; position:fixed; inset:0; background:var(--overlay); z-index:0; }
+    header { position:relative; z-index:1; text-align:center; color:#fff; padding:90px 20px 40px; text-shadow:0 3px 10px rgba(0,0,0,.5); }
+    header h1 { font-size:2.5rem; margin-bottom:10px; }
+    header p { font-size:1.1rem; color:#e8f5e9; max-width:750px; margin:0 auto; }
+    .container {
+      position:relative; z-index:1; max-width:950px; margin:60px auto 100px; background:var(--card-bg);
+      padding:50px 60px; border-radius:18px; box-shadow:0 10px 30px rgba(0,0,0,.25); text-align:center;
+    }
+    .total { font-size:1.6rem; font-weight:bold; color:var(--primary); margin-bottom:40px; }
+    h3 { color:var(--secondary); margin-top:40px; font-size:1.3rem; }
+    svg { width:100%; height:420px; margin-bottom:20px; }
+    .button { background:var(--primary); color:#fff; text-decoration:none; padding:14px 30px; font-size:1rem; border-radius:8px; display:inline-block; margin-top:30px; }
+    .button:hover { background:var(--secondary); transform:translateY(-2px); }
+    .legend { display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:8px 16px; justify-items:start; align-items:center; max-width:800px; margin:10px auto 40px; text-align:left; }
+    .legend-item { display:flex; align-items:center; gap:8px; font-size:13px; }
+    .legend-swatch { width:12px; height:12px; border-radius:3px; flex:0 0 12px; }
+    .notice { margin:18px auto 0; color:#666; font-size:14px; }
+    footer { text-align:center; color:#fff; font-size:.9rem; margin-bottom:40px; opacity:.8; }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>SCAR – Carbon Footprint Results</h1>
+    <p>Your estimated carbon emissions for this research project</p>
+  </header>
+
+  <div class="container">
+    <div class="total" id="totalLine">Total estimated emissions: — kgCO₂e</div>
+
+    <h3>Emissions by Category</h3>
+    <svg id="barChart"></svg>
+
+    <h3>Category Share</h3>
+    <svg id="pieChart"></svg>
+    <div id="pieLegend" class="legend"></div>
+
+    <div id="emptyMsg" class="notice" style="display:none;"></div>
+
+    <a href="form_scar.html" class="button">← Back to Form</a>
+  </div>
+
+  <footer>&copy; <span id="year"></span> SCAR — Manon Lasfargue</footer>
+
+  <!-- D3 scripts -->
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3-scale-chromatic@3.0.0/dist/d3-scale-chromatic.min.js"></script>
+
+  <!-- FACTORS as embedded JSON (aucun Flask/Jinja) -->
+  <script type="application/json" id="factors-json">
+  {
+    "flight_short": 0.255,
+    "flight_medium": 0.145,
+    "flight_long": 0.133,
+    "train_tgv": 0.003,
+    "train_ter": 0.007,
+    "car_diesel": 0.25,
+    "car_essence": 0.23,
+    "carpool": 0.083,
+    "bus": 0.10,
+    "metro": 0.005,
+    "electricity": 0.079,
+    "gas": 0.227,
+    "fioul": 0.300,
+    "heating_network": 0.180,
+    "laptops": 300,
+    "desktop": 450,
+    "screen": 100,
+    "server": 1600,
+    "cloud": 120,
+    "video_conf": 0.055,
+    "email": 0.035,
+    "llm_usage": 0.001,
+    "ai_training": 3.0,
+    "meat_meals": 5.0,
+    "white_meat_meals": 2.0,
+    "veg_meals": 1.0,
+    "coffee": 0.07,
+    "hotel_night": 6.5,
+    "airbnb_night": 3.5,
+    "conference_day": 15.0,
+    "conference_meal": 4.0
+  }
+  </script>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    function safeParse(json) { try { return JSON.parse(json); } catch { return null; } }
+
+    const formDataRaw = localStorage.getItem("scarFormData");
+    const factorsRaw  = document.getElementById("factors-json").textContent;
+    const formData    = safeParse(formDataRaw) || {};
+    const FACTORS     = safeParse(factorsRaw) || {};
+
+    // Coercition des entrées en nombres
+    for (const k in formData) {
+      const v = formData[k];
+      formData[k] = v === "" || v == null ? 0 : +v;
+      if (Number.isNaN(formData[k])) formData[k] = 0;
+    }
+
+    // Calcul des résultats poste par poste
+    const results = {};
+    Object.keys(FACTORS).forEach(k => {
+      const qty = formData[k] || 0;
+      const fac = FACTORS[k] || 0;
+      const val = qty * fac;
+      if (val > 0) results[k] = Math.round(val * 100) / 100;
+    });
+
+    const total = Object.values(results).reduce((a, b) => a + b, 0);
+    document.getElementById("totalLine").textContent =
+      `Total estimated emissions: ${Math.round(total * 100) / 100} kgCO₂e`;
+
+    const data = Object.entries(results).map(([category, value]) => ({ category, value }));
+    const hasData = data.length > 0;
+
+    const emptyMsg = document.getElementById("emptyMsg");
+    if (!hasData) {
+      emptyMsg.style.display = "block";
+      emptyMsg.textContent = "No data provided. Please fill the form first, then submit.";
+    }
+
+    // --- BAR CHART ---
+    const barWidth = 800, barHeight = 400, margin = { top: 40, right: 30, bottom: 80, left: 70 };
+    const svgBar = d3.select("#barChart").attr("width", barWidth).attr("height", barHeight);
+
+    if (hasData) {
+      const x = d3.scaleBand().domain(data.map(d => d.category)).range([margin.left, barWidth - margin.right]).padding(0.25);
+      const y = d3.scaleLinear().domain([0, d3.max(data, d => d.value)]).nice()
+                  .range([barHeight - margin.bottom, margin.top]);
+
+      svgBar.append("g")
+        .attr("transform", `translate(0,${barHeight - margin.bottom})`)
+        .call(d3.axisBottom(x))
+        .selectAll("text").attr("transform", "rotate(-35)").style("text-anchor", "end").style("font-size", "12px");
+
+      svgBar.append("g").attr("transform", `translate(${margin.left},0)`).call(d3.axisLeft(y));
+
+      svgBar.selectAll("rect")
+        .data(data).enter().append("rect")
+        .attr("x", d => x(d.category))
+        .attr("y", d => y(d.value))
+        .attr("width", x.bandwidth())
+        .attr("height", d => barHeight - margin.bottom - y(d.value))
+        .attr("fill", "#2e7d32")
+        .on("mouseover", function(){ d3.select(this).attr("fill", "#66bb6a"); })
+        .on("mouseout",  function(){ d3.select(this).attr("fill", "#2e7d32"); });
+
+    } else {
+      svgBar.append("text")
+        .attr("x", barWidth / 2).attr("y", barHeight / 2)
+        .attr("text-anchor", "middle").style("fill", "#666").style("font-size", "14px")
+        .text("No data provided. Please fill the form first.");
+    }
+
+    // --- PIE CHART ---
+    const pieWidth = 500, pieHeight = 420, radius = Math.min(pieWidth, pieHeight) / 2 - 10;
+    const svgPie = d3.select("#pieChart").attr("width", pieWidth).attr("height", pieHeight);
+    const gPie = svgPie.append("g").attr("transform", `translate(${pieWidth / 2}, ${pieHeight / 2 - 10})`);
+    const legendWrap = d3.select("#pieLegend");
+
+    if (hasData) {
+      const totalSum = d3.sum(data, d => d.value);
+      const pie = d3.pie().sort(null).value(d => d.value);
+      const arcs = pie(data);
+      const color = d3.scaleOrdinal().domain(data.map(d => d.category)).range(d3.schemeTableau10);
+      const arc = d3.arc().innerRadius(70).outerRadius(radius);
+
+      gPie.selectAll("path").data(arcs).enter().append("path")
+        .attr("d", arc)
+        .attr("fill", d => color(d.data.category))
+        .attr("stroke", "#fff").style("stroke-width", "2px");
+
+      legendWrap.selectAll(".legend-item").data(arcs).enter().append("div")
+        .attr("class", "legend-item")
+        .each(function(d){
+          const row = d3.select(this);
+          row.append("span").attr("class", "legend-swatch").style("background-color", color(d.data.category));
+          const pct = totalSum > 0 ? Math.round((d.data.value / totalSum) * 100) : 0;
+          row.append("span").text(`${d.data.category} — ${pct}%`);
+        });
+    } else {
+      svgPie.append("text")
+        .attr("x", pieWidth / 2).attr("y", pieHeight / 2)
+        .attr("text-anchor", "middle").style("fill", "#666").style("font-size", "14px")
+        .text("No data to display.");
+    }
+  </script>
+</body>
+</html>

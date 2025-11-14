@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>SCAR — Scenarios for Carbon Assessment in Research</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --primary: #2e7d32;
+      --secondary: #1b5e20;
+      --bg: #f3f6f4;
+      --text: #1a1a1a;
+      --overlay: rgba(0, 0, 0, 0.6);
+    }
+
+    body {
+      margin: 0;
+      font-family: "Roboto Slab", serif;
+      background: var(--bg);
+      color: var(--text);
+      scroll-behavior: smooth;
+    }
+
+    header {
+      background-image: url("../static/scar.png");
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      color: white;
+      text-align: center;
+    }
+
+    header::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: var(--overlay);
+      backdrop-filter: blur(2px);
+    }
+
+    .hero-content {
+      position: relative;
+      max-width: 850px;
+      padding: 20px;
+      z-index: 1;
+      animation: fadeIn 1.5s ease;
+    }
+
+    h1 {
+      font-size: 3.4rem;
+      margin-bottom: 1rem;
+      text-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+      line-height: 1.2;
+    }
+
+    p.lead {
+      font-size: 1.25rem;
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+      color: #e8f5e9;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .btn {
+      background-color: var(--primary);
+      color: white;
+      padding: 16px 36px;
+      border: none;
+      font-size: 1.15rem;
+      border-radius: 10px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+
+    .btn:hover {
+      background-color: var(--secondary);
+      transform: translateY(-3px);
+    }
+
+    nav {
+      background: rgba(255, 255, 255, 0.95);
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 18px;
+      border-bottom: 1px solid #ddd;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(6px);
+    }
+
+    nav a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+      position: relative;
+      transition: color 0.3s ease;
+    }
+
+    nav a::after {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 2px;
+      background: var(--primary);
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      transition: width 0.3s ease;
+    }
+
+    nav a:hover {
+      color: var(--secondary);
+    }
+
+    nav a:hover::after {
+      width: 100%;
+    }
+
+    section {
+      max-width: 1000px;
+      margin: 100px auto;
+      padding: 0 25px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+      padding: 50px;
+    }
+
+    section h2 {
+      font-size: 2.1rem;
+      color: var(--secondary);
+      margin-bottom: 1.5rem;
+      text-align: center;
+      position: relative;
+    }
+
+    section h2::after {
+      content: "";
+      position: absolute;
+      width: 80px;
+      height: 3px;
+      background: var(--primary);
+      bottom: -10px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-radius: 2px;
+    }
+
+    section p {
+      font-size: 1.1rem;
+      line-height: 1.9;
+      text-align: justify;
+      color: #333;
+    }
+
+    .fade-in {
+      opacity: 0;
+      transform: translateY(25px);
+      transition: opacity 1s ease, transform 1s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      font-size: 0.95rem;
+      background: white;
+      border-top: 1px solid #ccc;
+      color: #555;
+    }
+
+    footer span {
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="hero-content">
+      <h1>SCAR — Scenarios for Carbon Assessment in Research</h1>
+      <p class="lead">
+        A digital platform designed to measure and visualize the environmental impact of scientific research projects. SCAR combines transparency, methodological rigor, and data-driven analysis to support sustainability in academia.
+      </p>
+      <a href="form_scar.html" class="btn">Get Started</a>
+    </div>
+  </header>
+
+  <nav>
+    <a href="#about">About</a>
+    <a href="#goal">Objectives</a>
+    <a href="#methodology">Methodology</a>
+  </nav>
+
+  <section id="about" class="fade-in">
+    <h2>About SCAR</h2>
+    <p>
+      SCAR (Scenarios for Carbon Assessment in Research) is an academic platform created to help research teams quantify and visualize the carbon footprint of their projects. It was developed by <strong>Manon Lasfargue</strong> at Université PSL as part of a research initiative on sustainable scientific practices. 
+      The platform uses verified emission factors from institutions such as ADEME and GES 1point5 to ensure scientific reliability and reproducibility in its calculations.
+    </p>
+  </section>
+
+  <section id="goal" class="fade-in">
+    <h2>Objectives</h2>
+    <p>
+      The goal of SCAR is to promote climate-conscious decision-making within the research community. By identifying key emission sources such as mobility, digital activities, and energy consumption, SCAR allows users to evaluate their environmental impact and explore alternative low-carbon strategies. 
+      The project aims to support more sustainable research policies and encourage transparent reporting within academic institutions.
+    </p>
+  </section>
+
+  <section id="methodology" class="fade-in">
+    <h2>Methodology</h2>
+    <p>
+      SCAR’s methodology is based on a modular calculation model integrating multiple categories of emissions. Through an intuitive online form, users provide information related to travel, IT infrastructure, energy use, and food. The system computes emissions using standardized coefficients and produces visual representations for analysis and comparison. 
+      The tool is designed to be scalable, allowing future updates as emission factors evolve or new data becomes available.
+    </p>
+  </section>
+
+  <footer>
+    &copy; <span id="year"></span> SCAR — Manon Lasfargue, Université PSL
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    const faders = document.querySelectorAll(".fade-in");
+    const observer = new IntersectionObserver(
+      entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) entry.target.classList.add("visible");
+        });
+      },
+      { threshold: 0.2 }
+    );
+    faders.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
