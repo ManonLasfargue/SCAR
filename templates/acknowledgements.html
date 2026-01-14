@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ===================== METADATA ===================== -->
+  <meta charset="UTF-8">
+  <title>SCAR – Acknowledgements</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Google Font used consistently across SCAR -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+  /* ===================== CSS VARIABLES ===================== */
+  :root{
+    --primary:#2e7d32;
+    --secondary:#1b5e20;
+    --overlay:rgba(0,0,0,.65);
+    --card-bg:rgba(255,255,255,.96);
+  }
+
+  /* ===================== GLOBAL PAGE STYLING ===================== */
+  body{
+    font-family:"Roboto Slab",serif;
+    margin:0;
+    background-image:url("{{ url_for('static', filename='scar.png') }}");
+    background-size:cover;
+    background-attachment:fixed;
+    color:#222;
+  }
+
+  /* Dark overlay to ensure contrast and readability */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:var(--overlay);
+    z-index:0;
+  }
+
+  /* ===================== MAIN CONTENT CARD ===================== */
+  main{
+    position:relative;
+    z-index:1;
+    max-width:900px;
+    margin:100px auto;
+    background:var(--card-bg);
+    padding:70px 70px 80px;
+    border-radius:18px;
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
+  }
+
+  /* Page title */
+  h1{
+    text-align:center;
+    color:var(--primary);
+    margin-bottom:15px;
+  }
+
+  /* Introductory subtitle */
+  .subtitle{
+    text-align:center;
+    color:#444;
+    max-width:750px;
+    margin:0 auto 55px;
+    line-height:1.8;
+    font-size:1.05rem;
+  }
+
+  /* ===================== ACKNOWLEDGEMENT SECTIONS ===================== */
+  /* Each section corresponds to a category of contributors */
+  .section{
+    margin-top:40px;
+  }
+
+  .section h2{
+    color:var(--secondary);
+    margin-bottom:12px;
+  }
+
+  /* Paragraph styling for acknowledgements text */
+  p{
+    line-height:1.9;
+    text-align:justify;
+    color:#444;
+    font-size:0.96rem;
+  }
+
+  /* ===================== HIGHLIGHT BLOCK ===================== */
+  /* Used to emphasise the collective nature of the project */
+  .highlight{
+    background:#f3f6f4;
+    border-left:4px solid var(--primary);
+    padding:20px 24px;
+    margin:35px 0;
+    font-style:italic;
+    color:#444;
+  }
+
+  /* ===================== NAVIGATION BUTTONS ===================== */
+  .nav-buttons{
+    margin-top:70px;
+    display:flex;
+    justify-content:center;
+    gap:18px;
+    flex-wrap:wrap;
+  }
+
+  .nav-btn{
+    background:var(--primary);
+    color:white;
+    text-decoration:none;
+    padding:14px 28px;
+    border-radius:10px;
+    font-weight:600;
+    font-size:1rem;
+    transition:all .25s ease;
+  }
+
+  .nav-btn:hover{
+    background:var(--secondary);
+    transform:translateY(-2px);
+  }
+  </style>
+</head>
+
+<body>
+
+<!-- ===================== MAIN CONTENT ===================== -->
+<main>
+
+  <!-- ===================== PAGE TITLE ===================== -->
+  <h1>Acknowledgements</h1>
+
+  <!-- Short introductory statement -->
+  <p class="subtitle">
+    This project would not have been possible without the guidance,
+    support, and encouragement of many people.
+  </p>
+
+  <!-- ===================== ACADEMIC SUPERVISION ===================== -->
+  <div class="section">
+    <h2>Academic supervision</h2>
+    <p>
+      I would first like to warmly thank <strong>Guillaume Dezecache</strong>,
+      who offered me the opportunity to undertake this internship and
+      introduced me to this research topic.
+      His guidance was essential throughout the project, and he continued
+      to support and advise me even after the end of the internship.
+    </p>
+  </div>
+
+  <!-- ===================== TEACHING SUPPORT ===================== -->
+  <div class="section">
+    <h2>Teaching support</h2>
+    <p>
+      I am also grateful to my professors <strong>Mr. Valentin Thouzeau</strong>
+      and <strong>Zoey Zhong</strong>, who accompanied me throughout my academic work.
+      Their expertise, availability, and constructive feedback were invaluable
+      whenever methodological or technical questions arose.
+    </p>
+  </div>
+
+  <!-- ===================== PEERS AND EXCHANGES ===================== -->
+  <div class="section">
+    <h2>Peers and collective exchanges</h2>
+    <p>
+      I would like to thank my fellow students and peers who shared their
+      perspectives, advice, and critical feedback on the progress of this project.
+      These exchanges were particularly enriching and helped improve both
+      the clarity and robustness of the work.
+    </p>
+  </div>
+
+  <!-- ===================== PERSONAL SUPPORT ===================== -->
+  <div class="section">
+    <h2>Personal support</h2>
+    <p>
+      Finally, I would like to express my sincere gratitude to my family
+      and close friends for their constant support, encouragement,
+      and patience throughout the development of this project.
+    </p>
+  </div>
+
+  <!-- ===================== FINAL COLLECTIVE ACKNOWLEDGEMENT ===================== -->
+  <div class="highlight">
+    This project is the result of both individual work and collective support.
+    I am deeply grateful to everyone who contributed, directly or indirectly,
+    to its completion.
+  </div>
+
+  <!-- ===================== NAVIGATION ===================== -->
+  <div class="nav-buttons">
+    <a href="{{ url_for('home') }}" class="nav-btn">← Back to home</a>
+    <a href="{{ url_for('form') }}" class="nav-btn">Carbon estimator</a>
+  </div>
+
+</main>
+
+</body>
+</html>

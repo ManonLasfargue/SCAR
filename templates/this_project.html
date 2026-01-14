@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ===================== METADATA ===================== -->
+  <meta charset="UTF-8">
+  <title>SCAR – This Project</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Google font used across the page -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+  /* ===================== CSS VARIABLES ===================== */
+  :root{
+    --primary:#2e7d32;
+    --secondary:#1b5e20;
+    --overlay:rgba(0,0,0,.65);
+    --card-bg:rgba(255,255,255,.96);
+  }
+
+  /* ===================== GLOBAL STYLING ===================== */
+  body{
+    font-family:"Roboto Slab",serif;
+    margin:0;
+    background-image:url("{{ url_for('static', filename='scar.png') }}");
+    background-size:cover;
+    background-attachment:fixed;
+    color:#222;
+  }
+
+  /* Dark overlay for readability */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:var(--overlay);
+    z-index:0;
+  }
+
+  /* ===================== MAIN CONTENT CARD ===================== */
+  main{
+    position:relative;
+    z-index:1;
+    max-width:950px;
+    margin:100px auto;
+    background:var(--card-bg);
+    padding:70px 70px 80px;
+    border-radius:18px;
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
+  }
+
+  /* Page title */
+  h1{
+    text-align:center;
+    color:var(--primary);
+    margin-bottom:15px;
+  }
+
+  /* Introductory subtitle */
+  .subtitle{
+    text-align:center;
+    color:#444;
+    max-width:720px;
+    margin:0 auto 50px;
+    line-height:1.8;
+    font-size:1.05rem;
+  }
+
+  /* ===================== ACCORDION STRUCTURE ===================== */
+  /* Used to organise the project presentation into thematic sections */
+  .accordion{
+    border-top:1px solid #ddd;
+  }
+
+  .accordion-item{
+    border-bottom:1px solid #ddd;
+  }
+
+  /* Clickable accordion headers */
+  .accordion-header{
+    cursor:pointer;
+    padding:22px 10px;
+    font-weight:700;
+    font-size:1.05rem;
+    color:var(--secondary);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+
+  .accordion-header:hover{
+    color:var(--primary);
+  }
+
+  /* Hidden content by default */
+  .accordion-content{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .5s ease;
+  }
+
+  .accordion-content-inner{
+    padding:0 10px 30px;
+    color:#444;
+    line-height:1.9;
+    font-size:0.96rem;
+  }
+
+  /* Expanded accordion state */
+  .accordion-item.active .accordion-content{
+    max-height:2000px;
+  }
+
+  /* Arrow indicator */
+  .arrow{
+    font-size:1.2rem;
+    transition:transform .3s ease;
+  }
+
+  .accordion-item.active .arrow{
+    transform:rotate(90deg);
+  }
+
+  /* ===================== HIGHLIGHT BOX ===================== */
+  /* Used to emphasise key ideas or turning points */
+  .highlight{
+    background:#f3f6f4;
+    border-left:4px solid var(--primary);
+    padding:18px 22px;
+    margin:25px 0;
+    font-size:0.95rem;
+    font-style:italic;
+  }
+
+  /* ===================== NAVIGATION ===================== */
+  .nav-buttons{
+    margin-top:70px;
+    display:flex;
+    justify-content:center;
+    gap:18px;
+    flex-wrap:wrap;
+  }
+
+  .nav-btn{
+    background:var(--primary);
+    color:white;
+    text-decoration:none;
+    padding:14px 28px;
+    border-radius:10px;
+    font-weight:600;
+    font-size:1rem;
+    transition:all .25s ease;
+  }
+
+  .nav-btn:hover{
+    background:var(--secondary);
+    transform:translateY(-2px);
+  }
+  </style>
+</head>
+
+<body>
+
+<!-- ===================== MAIN CONTENT ===================== -->
+<main>
+
+  <!-- ===================== PAGE TITLE ===================== -->
+  <h1>This project</h1>
+
+  <!-- General presentation of SCAR -->
+  <p class="subtitle">
+    SCAR (Scenarios for Carbon Assessment in Research) is both a research-driven
+    and practice-oriented project, designed to make the environmental footprint
+    of academic activities <strong>visible, discussable, and interpretable</strong>.
+  </p>
+
+  <!-- ===================== ACCORDION SECTIONS ===================== -->
+  <div class="accordion">
+
+    <!-- ===================== 1. GENESIS ===================== -->
+    <div class="accordion-item">
+      <div class="accordion-header">
+        1. Genesis of the project
+        <span class="arrow">›</span>
+      </div>
+      <div class="accordion-content">
+        <div class="accordion-content-inner">
+          <p>
+            SCAR originated during a research internship conducted between
+            <strong>January and June 2025</strong>.
+            The initial direction and conceptual framing of the project were proposed by
+            <strong>Guillaume Dezecache</strong>, Research Director at the
+            <em>French National Research Institute for Sustainable Development (IRD)</em>,
+            specialising in sustainability sciences.
+            His guidance played a decisive role in shaping both the scientific questions
+            addressed by the project and the methodological orientation of the tool.
+          </p>
+          <p>
+            Throughout this internship, SCAR progressively took the form of a prototype
+            aimed at quantifying the carbon footprint of research projects while remaining
+            compatible with academic constraints and practices.
+          </p>
+          <div class="highlight">
+            At the end of the internship, the decision was made to continue developing SCAR
+            independently, motivated by the conviction that the project is both
+            <strong>methodologically relevant</strong> and
+            <strong>socially necessary</strong>.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== 2. CONTEXT ===================== -->
+    <div class="accordion-item">
+      <div class="accordion-header">
+        2. Academic and institutional context
+        <span class="arrow">›</span>
+      </div>
+      <div class="accordion-content">
+        <div class="accordion-content-inner">
+          <p>
+            SCAR emerges from a growing paradox within academia:
+            while research increasingly focuses on environmental and climate-related issues,
+            the environmental impact of research practices themselves remains
+            <strong>poorly quantified and rarely problematised</strong>.
+          </p>
+          <p>
+            Conferences, fieldwork, computational resources, and digital infrastructures
+            are often treated as unavoidable necessities, leaving little room for
+            systematic reflection on their cumulative carbon footprint at the scale
+            of individual research projects.
+          </p>
+          <p>
+            At the same time, this lack of quantification is becoming increasingly problematic
+            in an evolving institutional context.
+            <strong>A growing number of research funding bodies and institutions now explicitly
+            request, or strongly encourage, carbon footprint estimations</strong>
+            as part of project evaluation and funding procedures.
+          </p>
+          <p>
+            In this context, carbon footprint assessment is no longer solely a matter of
+            individual environmental awareness, but increasingly a
+            <strong>practical and institutional requirement</strong>.
+          </p>
+          <p>
+            SCAR positions itself as a response to this gap by providing a concrete,
+            transparent, and accessible tool that allows emissions to be
+            <strong>measured, visualised, and discussed</strong>
+            at the scale of individual research projects.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== 3. PHILOSOPHY ===================== -->
+    <div class="accordion-item">
+      <div class="accordion-header">
+        3. Conceptual and ethical positioning
+        <span class="arrow">›</span>
+      </div>
+      <div class="accordion-content">
+        <div class="accordion-content-inner">
+          <p>
+            SCAR explicitly rejects a moralising or punitive approach to carbon accounting.
+            Its objective is not to judge researchers, disciplines, or institutions.
+          </p>
+          <p>
+            Instead, SCAR is grounded in a philosophy of <strong>reflexivity</strong>.
+          </p>
+          <div class="highlight">
+            The ambition of SCAR is not to minimise emissions at all costs,
+            but to make trade-offs explicit where choices exist.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== 4. SCENARIOS ===================== -->
+    <div class="accordion-item">
+      <div class="accordion-header">
+        4. Why a scenario-based approach?
+        <span class="arrow">›</span>
+      </div>
+      <div class="accordion-content">
+        <div class="accordion-content-inner">
+          <p>
+            Rather than producing a single “optimal” footprint,
+            SCAR adopts a <strong>scenario-based approach</strong>.
+          </p>
+          <p>
+            Scenarios are intentionally conservative and realistic.
+          </p>
+          <p>
+            Their role is to highlight <em>margins of action</em>, not to prescribe behaviour.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== 5. FUTURE ===================== -->
+    <div class="accordion-item">
+      <div class="accordion-header">
+        5. A living and evolving project
+        <span class="arrow">›</span>
+      </div>
+      <div class="accordion-content">
+        <div class="accordion-content-inner">
+          <p>
+            SCAR is conceived as a <strong>living framework</strong>.
+          </p>
+          <p>
+            Beyond its current form, SCAR could be adapted to institutional contexts.
+          </p>
+          <div class="highlight">
+            SCAR is not an endpoint, but a starting point
+            for collective reflection on sustainable research practices.
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===================== NAVIGATION ===================== -->
+  <div class="nav-buttons">
+    <a href="{{ url_for('home') }}" class="nav-btn">← Back to home</a>
+    <a href="{{ url_for('form') }}" class="nav-btn">Carbon estimator</a>
+  </div>
+
+</main>
+
+<!-- ===================== ACCORDION SCRIPT ===================== -->
+<script>
+  /* Toggle accordion sections when clicking on headers */
+  document.querySelectorAll(".accordion-header").forEach(header=>{
+    header.addEventListener("click",()=>{
+      header.parentElement.classList.toggle("active");
+    });
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SCAR – Results</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- Academic serif font -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ======================================================
+   COLOR PALETTE AND VARIABLES
+   ====================================================== */
+:root{
+  --primary:#2e7d32;
+  --secondary:#1b5e20;
+  --overlay:rgba(0,0,0,.65);
+  --card-bg:rgba(255,255,255,.96);
+}
+
+/* ======================================================
+   BACKGROUND AND OVERLAY
+   ====================================================== */
+body{
+  font-family:"Roboto Slab",serif;
+  margin:0;
+  background-image:url("{{ url_for('static', filename='scar.png') }}");
+  background-size:cover;
+  background-position:center;
+  background-attachment:fixed;
+  color:#222;
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:var(--overlay);
+  z-index:0;
+}
+
+/* ======================================================
+   HEADER
+   ====================================================== */
+header{
+  position:relative;
+  z-index:1;
+  text-align:center;
+  color:#fff;
+  padding:90px 20px 40px;
+}
+
+header p.subtitle{
+  font-size:1.25rem;
+  font-weight:600;
+  color:#e8f5e9;
+  margin-top:10px;
+  text-align:center;
+  margin-left:auto;
+  margin-right:auto;
+  max-width:900px;
+  letter-spacing:0.3px;
+  text-shadow:0 2px 10px rgba(0,0,0,.5);
+}
+
+
+/* ======================================================
+   MAIN CONTAINER
+   ====================================================== */
+.container{
+  position:relative;
+  z-index:1;
+  max-width:1000px;
+  margin:60px auto 100px;
+  background:var(--card-bg);
+  padding:65px 75px;
+  border-radius:18px;
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
+}
+
+/* ======================================================
+   TYPOGRAPHY
+   ====================================================== */
+.total{
+  font-size:1.9rem;
+  font-weight:700;
+  color:var(--primary);
+  text-align:center;
+  margin-bottom:30px;
+}
+
+h3{
+  color:var(--secondary);
+  margin-top:55px;
+}
+
+h4{
+  margin-top:30px;
+}
+
+p{
+  color:#444;
+  line-height:1.9;
+  font-size:0.97rem;
+  text-align:justify;
+}
+
+/* ======================================================
+   SVG CONTAINERS
+   ====================================================== */
+svg{ width:100%; }
+#utilityGauge{ height:70px; }
+#barChart{ height:380px; }
+#pieChart{ height:360px; }
+
+/* ======================================================
+   LEGEND AND TABLE
+   ====================================================== */
+.legend{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:8px 16px;
+  margin-top:20px;
+}
+
+.legend-item{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:13px;
+}
+
+.legend-swatch{
+  width:14px;
+  height:14px;
+  border-radius:3px;
+}
+
+.scenario-box{
+  margin-top:85px;
+  padding-top:55px;
+  border-top:1px solid #ddd;
+}
+
+.scenario-table{
+  width:100%;
+  border-collapse:collapse;
+  margin:35px 0;
+}
+
+.scenario-table th,
+.scenario-table td{
+  padding:14px;
+  border-bottom:1px solid #ddd;
+  text-align:center;
+}
+
+.scenario-table th{
+  background:#f3f6f4;
+}
+
+/* ======================================================
+   ACTION BOX
+   ====================================================== */
+.how-to-act{
+  background:#f3f6f4;
+  border-left:6px solid var(--primary);
+  padding:30px 36px;
+  margin:55px 0 45px;
+  border-radius:8px;
+}
+
+.how-to-act h4{
+  margin-top:0;
+  color:var(--secondary);
+}
+
+.how-to-act ul{
+  margin:18px 0 0 18px;
+}
+
+.how-to-act li{
+  margin-bottom:14px;
+  line-height:1.75;
+  font-size:0.95rem;
+}
+
+/* ======================================================
+   BUTTONS
+   ====================================================== */
+.pdf-export{
+  text-align:center;
+  margin:60px 0 40px;
+}
+
+.pdf-button{
+  background-color:var(--primary);
+  color:white;
+  border:none;
+  padding:16px 34px;
+  font-size:15px;
+  font-weight:600;
+  border-radius:8px;
+  cursor:pointer;
+}
+
+.pdf-button:hover{
+  background-color:var(--secondary);
+}
+
+.button{
+  background:var(--primary);
+  color:#fff;
+  text-decoration:none;
+  padding:14px 28px;
+  border-radius:8px;
+  margin:10px;
+  display:inline-block;
+}
+
+.button:hover{
+  background:var(--secondary);
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>SCAR – Carbon Footprint Results</h1>
+  <p class="subtitle">
+    A quantitative and interpretative assessment of your research project
+  </p>
+</header>
+
+<div class="container">
+
+  <!-- ================= TOTAL ================= -->
+  <div class="total">
+    Total estimated emissions: {{ totals.baseline }} kgCO₂e
+  </div>
+
+  <p>
+    This page presents a baseline carbon footprint assessment of your research project,
+    followed by a set of exploratory scenarios. Together, these elements aim to make
+    the environmental implications of research practices visible, interpretable,
+    and open to discussion.
+  </p>
+
+  <p>
+    All values should be understood as <strong>order-of-magnitude estimates</strong>.
+    Their purpose is not exact accounting, but to support informed reflection on how
+    research activities are organised and where meaningful margins of action may exist.
+  </p>
+
+  <!-- ================= UTILITY ================= -->
+  <h3>Mission usefulness</h3>
+
+  <p>
+    The mission usefulness indicator reflects the perceived scientific, social,
+    or institutional value of the project, as assessed by the user.
+    It is deliberately subjective and is not used to rank projects.
+  </p>
+
+  <svg id="utilityGauge"></svg>
+
+  <!-- ================= BASELINE ================= -->
+  <h3>Emissions by category</h3>
+
+  <p>
+    The bar chart below shows the absolute distribution of emissions across activity
+    categories included in the assessment. It highlights structural emission drivers,
+    i.e. activities that disproportionately shape the total footprint.
+  </p>
+
+  <svg id="barChart"></svg>
+
+  <h3>Category share</h3>
+
+  <p>
+    The pie chart expresses the contribution of each category as a percentage of
+    total emissions, allowing for rapid identification of dominant posts.
+  </p>
+
+  <svg id="pieChart"></svg>
+  <div id="pieLegend" class="legend"></div>
+
+  <!-- ================= INTERPRETATION ================= -->
+  <div class="scenario-box">
+
+    <h3>Interpretation of the baseline footprint</h3>
+
+    {% if baseline_profile == "digital" %}
+      <p>
+        The baseline assessment reveals a strong concentration of emissions on
+        <strong>digital and computational activities</strong>, accounting for
+        approximately <strong>{{ dominant_share }}%</strong> of total emissions.
+      </p>
+      <p>
+        This profile is typical of data-intensive research projects relying on
+        simulations, modelling, or sustained computing infrastructure.
+      </p>
+    {% elif baseline_profile == "mobility" %}
+      <p>
+        Mobility-related activities represent the dominant emission source,
+        accounting for <strong>{{ dominant_share }}%</strong> of total emissions,
+        primarily driven by <strong>{{ dominant_post }}</strong>.
+      </p>
+    {% elif baseline_profile == "mixed" %}
+      <p>
+        Emissions are distributed across several categories, indicating that
+        mitigation strategies are likely to rely on a combination of moderate
+        adjustments rather than a single dominant lever.
+      </p>
+    {% elif baseline_profile == "low" %}
+      <p>
+        The overall footprint of this project is relatively low, suggesting
+        that it already operates within constrained emission margins.
+      </p>
+    {% else %}
+      <p>
+        No clearly dominant emission driver emerges, highlighting the importance
+        of considering the full activity profile.
+      </p>
+    {% endif %}
+
+    <!-- ================= SCENARIOS ================= -->
+    <h3>Scenario analysis</h3>
+
+    <p>
+      Scenarios in SCAR are counterfactual analytical tools. They do not predict
+      future emissions, nor do they prescribe mandatory reductions. Instead,
+      they explore plausible margins of action under realistic constraints.
+    </p>
+
+    <table class="scenario-table">
+  <thead>
+    <tr>
+      <th>Scenario</th>
+      <th>Targeted emission category</th>
+      <th>Assumption applied</th>
+      <th>Resulting project emissions (kgCO₂e)</th>
+      <th>Relative change vs baseline</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Baseline</strong></td>
+      <td>—</td>
+      <td>Observed research practices</td>
+      <td>{{ totals.baseline }}</td>
+      <td>—</td>
+    </tr>
+    <tr>
+      <td>Modal substitution</td>
+      <td>Mobility</td>
+      <td>Shift to lower-carbon transport modes</td>
+      <td>{{ totals.modal }}</td>
+      <td>−{{ reductions.modal }}%</td>
+    </tr>
+    <tr>
+      <td>Digital sobriety</td>
+      <td>Digital infrastructure</td>
+      <td>Reduced computing and storage intensity</td>
+      <td>{{ totals.digital }}</td>
+      <td>{{ reductions.digital }}%</td>
+    </tr>
+    <tr>
+      <td>Utility-aware scenario</td>
+      <td>Mobility (weighted by usefulness)</td>
+      <td>Emissions adjusted proportionally to mission utility</td>
+      <td>{{ totals.utility }}</td>
+      <td>−{{ reductions.utility }}%</td>
+    </tr>
+  </tbody>
+</table>
+
+<p style="font-size:0.9rem; color:#555; margin-top:18px;">
+  Resulting emissions represent the aggregate footprint of the project under each scenario,
+  assuming that only the targeted emission category is modified while all other activities
+  remain unchanged. A zero relative change therefore indicates that the targeted category
+  does not structurally drive the project’s baseline footprint.
+</p>
+
+
+    <p>
+  The <strong>modal substitution scenario</strong> simulates the replacement
+  of high-carbon transport modes by lower-carbon alternatives where such
+  substitution is technically and organisationally feasible. It does not
+  eliminate travel, but explores how its carbon intensity could be reduced.
+</p>
+
+<p>
+  The <strong>digital sobriety scenario</strong> models moderate reductions
+  in digital intensity, such as lower computing loads, reduced storage needs,
+  or more efficient use of shared infrastructure. It highlights that
+  meaningful reductions often depend on collective and infrastructural choices
+  rather than on individual behaviour alone.
+</p>
+
+<p>
+  The <strong>utility-aware scenario</strong> introduces an explicit reflection
+  on proportionality. It explores how emissions might be adjusted when research
+  activities are weighted by their perceived scientific or societal usefulness,
+  without questioning the legitimacy of the research itself.
+</p>
+
+
+    <div class="how-to-act">
+
+  <h4>How to act on these results</h4>
+
+  <p>
+    The objective of SCAR is not to minimise emissions at all costs, but to support
+    <strong>informed, proportionate, and context-sensitive decisions</strong>.
+    The results above can be mobilised at multiple stages of a research project:
+    during its design, its execution, and its evaluation.
+  </p>
+
+  <p>
+    The actions suggested below are not prescriptions. They are examples of
+    <strong>decision levers</strong> that become visible once emissions are made explicit.
+  </p>
+
+  <ul>
+    <li>
+      <strong>Revisiting mobility strategies at the project level:</strong><br>
+      When mobility-related emissions represent a significant share of the footprint,
+      mitigation does not necessarily imply “less science”, but <em>different organisation</em>.
+      Concrete options include prioritising rail for distances under 5–6 hours,
+      clustering missions to reduce travel frequency, coordinating fieldwork across team members,
+      or favouring hybrid conference participation when physical presence is not strictly necessary.
+      These choices often require collective coordination rather than individual effort.
+    </li>
+
+    <li>
+      <strong>Acting on digital infrastructure rather than individual behaviour:</strong><br>
+      In projects where digital practices dominate emissions, the main levers are structural.
+      Examples include reducing server over-provisioning, adjusting storage volumes to actual needs,
+      limiting unnecessary data duplication, shortening data retention periods,
+      or pooling computational resources at the laboratory or institutional level.
+      Individual “sobriety” has limited impact unless embedded in shared infrastructure choices.
+    </li>
+
+    <li>
+      <strong>Embedding carbon considerations in project design:</strong><br>
+      SCAR can be used upstream, before a project is fully defined.
+      Comparing alternative research configurations (e.g. number of missions,
+      choice of data collection methods, computing intensity)
+      allows teams to identify low-carbon options that remain scientifically robust.
+      This is particularly relevant for grant applications, consortium design,
+      and long-term research planning.
+    </li>
+
+    <li>
+      <strong>Using proportionality as an explicit principle:</strong><br>
+      The utility-aware scenario encourages teams to make explicit the relationship
+      between emissions and scientific or societal value.
+      High-emission activities may be justified, but they should be
+      <em>explicitly motivated, documented, and discussed</em>,
+      rather than treated as implicit necessities.
+      This shifts the discussion from “reducing emissions” to
+      “aligning emissions with research objectives”.
+    </li>
+
+    <li>
+      <strong>Supporting collective discussion and institutional learning:</strong><br>
+      Beyond individual projects, aggregated SCAR results can inform
+      laboratory-level or institutional discussions.
+      Identifying recurring emission drivers across projects
+      helps prioritise structural investments,
+      such as shared computing infrastructure, travel policies,
+      or support for alternative collaboration formats.
+    </li>
+  </ul>
+
+  <p style="margin-top:18px;">
+    In this perspective, SCAR is not a compliance tool.
+    It provides a <strong>shared analytical language</strong> through which
+    environmental constraints, scientific ambitions, and organisational realities
+    can be discussed together.
+  </p>
+
+</div>
+
+  </div>
+
+  <!-- ================= PDF ================= -->
+  <form action="{{ url_for('export_pdf') }}" method="POST" class="pdf-export">
+    {% for key, value in request.form.items() %}
+      <input type="hidden" name="{{ key }}" value="{{ value }}">
+    {% endfor %}
+    <button type="submit" class="pdf-button">
+      Download PDF report
+    </button>
+  </form>
+
+  <div style="text-align:center;">
+    <a href="{{ url_for('form') }}" class="button">Back to form</a>
+    <a href="{{ url_for('home') }}" class="button">Back to home</a>
+  </div>
+
+</div>
+
+<script src="https://d3js.org/d3.v7.min.js"></script>
+
+<script type="application/json" id="utility-data">{{ utility | tojson }}</script>
+<script type="application/json" id="results-data">{{ results | tojson }}</script>
+
+<script>
+// ======================================================
+// DATA PARSING
+// ======================================================
+const utility = JSON.parse(document.getElementById("utility-data").textContent);
+const results = JSON.parse(document.getElementById("results-data").textContent);
+
+// Convert results object to array and remove zero values
+const data = Object.entries(results)
+  .filter(([_, v]) => v > 0)
+  .map(([k, v]) => ({ category: k, value: v }));
+
+// ======================================================
+// UTILITY GAUGE
+// ======================================================
+const g = d3.select("#utilityGauge");
+
+g.append("rect")
+  .attr("x", 0)
+  .attr("y", 30)
+  .attr("width", 420)
+  .attr("height", 18)
+  .attr("rx", 10)
+  .attr("fill", "#e0e0e0");
+
+g.append("rect")
+  .attr("x", 0)
+  .attr("y", 30)
+  .attr("width", (utility / 10) * 420)
+  .attr("height", 18)
+  .attr("rx", 10)
+  .attr("fill", "#2e7d32");
+
+g.append("text")
+  .attr("x", 210)
+  .attr("y", 60)
+  .attr("text-anchor", "middle")
+  .style("font-size", "13px")
+  .text(`Mission usefulness: ${utility}/10`);
+
+// ======================================================
+// BAR CHART
+// ======================================================
+const bw = 820, bh = 380;
+const margin = { top: 30, right: 30, bottom: 90, left: 80 };
+
+const barSvg = d3.select("#barChart")
+  .attr("width", bw)
+  .attr("height", bh);
+
+const x = d3.scaleBand()
+  .domain(data.map(d => d.category))
+  .range([margin.left, bw - margin.right])
+  .padding(0.25);
+
+const y = d3.scaleLinear()
+  .domain([0, d3.max(data, d => d.value)]).nice()
+  .range([bh - margin.bottom, margin.top]);
+
+barSvg.append("g")
+  .attr("transform", `translate(0,${bh - margin.bottom})`)
+  .call(d3.axisBottom(x))
+  .selectAll("text")
+  .attr("transform", "rotate(-35)")
+  .style("text-anchor", "end");
+
+barSvg.append("g")
+  .attr("transform", `translate(${margin.left},0)`)
+  .call(d3.axisLeft(y));
+
+barSvg.selectAll("rect")
+  .data(data)
+  .enter()
+  .append("rect")
+  .attr("x", d => x(d.category))
+  .attr("y", d => y(d.value))
+  .attr("width", x.bandwidth())
+  .attr("height", d => bh - margin.bottom - y(d.value))
+  .attr("fill", "#2e7d32");
+
+// ======================================================
+// PIE CHART
+// ======================================================
+const pw = 520, ph = 360;
+const radius = Math.min(pw, ph) / 2 - 20;
+
+const pieSvg = d3.select("#pieChart")
+  .attr("width", pw)
+  .attr("height", ph)
+  .append("g")
+  .attr("transform", `translate(${pw / 2},${ph / 2})`);
+
+const color = d3.scaleOrdinal(d3.schemeTableau10);
+
+const pie = d3.pie().value(d => d.value);
+const arc = d3.arc().innerRadius(70).outerRadius(radius);
+
+const arcs = pie(data);
+const total = d3.sum(data, d => d.value);
+
+pieSvg.selectAll("path")
+  .data(arcs)
+  .enter()
+  .append("path")
+  .attr("d", arc)
+  .attr("fill", d => color(d.data.category))
+  .attr("stroke", "#fff");
+
+// ======================================================
+// PIE LEGEND
+// ======================================================
+const legend = d3.select("#pieLegend");
+
+legend.selectAll(".legend-item")
+  .data(arcs)
+  .enter()
+  .append("div")
+  .attr("class", "legend-item")
+  .each(function(d){
+    d3.select(this).append("span")
+      .attr("class", "legend-swatch")
+      .style("background", color(d.data.category));
+
+    d3.select(this).append("span")
+      .text(`${d.data.category} — ${Math.round(d.data.value / total * 100)}%`);
+  });
+</script>

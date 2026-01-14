@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Character encoding and page metadata -->
+  <meta charset="UTF-8" />
+  <title>SCAR — Scenarios for Carbon Assessment in Research</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Google Font used across the website -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+  /* ===================== CSS VARIABLES ===================== */
+  /* Define main colors used throughout the interface */
+  :root{
+    --primary:#2e7d32;
+    --secondary:#1b5e20;
+    --overlay:rgba(0,0,0,.62);
+  }
+
+  /* ===================== GLOBAL STYLES ===================== */
+  body{
+    margin:0;
+    font-family:"Roboto Slab",serif;
+    background:#f3f6f4;
+    color:#1a1a1a;
+  }
+
+  /* ===================== HERO SECTION ===================== */
+  /* Fullscreen landing section with background image */
+  header{
+    background-image:url("{{ url_for('static', filename='scar.png') }}");
+    background-size:cover;
+    background-position:center;
+    height:100vh;
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    text-align:center;
+  }
+
+  /* Dark overlay to improve text readability */
+  header::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:linear-gradient(
+      rgba(0,0,0,.65),
+      rgba(0,0,0,.55)
+    );
+  }
+
+  /* Container for the main title and description */
+  .hero{
+    position:relative;
+    z-index:1;
+    max-width:900px;
+    padding:30px;
+    animation:fadeUp 1.2s ease;
+  }
+
+  .hero h1{
+    font-size:3.6rem;
+    margin-bottom:24px;
+    line-height:1.15;
+    letter-spacing:.5px;
+  }
+
+  .hero p{
+    font-size:1.3rem;
+    line-height:1.9;
+    color:#e8f5e9;
+    margin-bottom:48px;
+  }
+
+  /* ===================== CALL TO ACTION ===================== */
+  /* Main button linking to the carbon assessment form */
+  .hero a{
+    background:var(--primary);
+    color:white;
+    padding:18px 42px;
+    border-radius:14px;
+    text-decoration:none;
+    font-weight:600;
+    font-size:1.15rem;
+    transition:all .3s ease;
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
+  }
+
+  .hero a:hover{
+    background:var(--secondary);
+    transform:translateY(-4px);
+  }
+
+  /* ===================== NAVIGATION MENU ===================== */
+  /* Floating menu displayed in the top-right corner */
+  nav{
+    position:fixed;
+    top:26px;
+    right:32px;
+    z-index:1000;
+  }
+
+  .menu-btn{
+    background:rgba(255,255,255,.95);
+    border:none;
+    padding:12px 20px;
+    border-radius:12px;
+    font-family:"Roboto Slab",serif;
+    font-weight:600;
+    cursor:pointer;
+    color:var(--primary);
+    box-shadow:0 6px 20px rgba(0,0,0,.15);
+  }
+
+  /* Dropdown panel hidden by default */
+  .menu-panel{
+    position:absolute;
+    right:0;
+    top:52px;
+    background:white;
+    border-radius:14px;
+    box-shadow:0 20px 40px rgba(0,0,0,.2);
+    min-width:240px;
+    overflow:hidden;
+    opacity:0;
+    transform:translateY(-8px);
+    pointer-events:none;
+    transition:all .25s ease;
+  }
+
+  /* Visible state of the menu */
+  .menu-panel.open{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+  }
+
+  .menu-panel a{
+    display:block;
+    padding:16px 20px;
+    text-decoration:none;
+    color:#1a1a1a;
+    font-size:1rem;
+    transition:background .2s ease;
+  }
+
+  .menu-panel a:hover{
+    background:#f1f5f2;
+  }
+
+  /* ===================== FOOTER ===================== */
+  footer{
+    background:white;
+    text-align:center;
+    padding:36px;
+    font-size:.95rem;
+    color:#555;
+  }
+
+  footer span{
+    color:var(--primary);
+    font-weight:600;
+  }
+
+  /* ===================== ANIMATIONS ===================== */
+  /* Simple fade-up animation for the hero section */
+  @keyframes fadeUp{
+    from{opacity:0; transform:translateY(30px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  </style>
+</head>
+
+<body>
+
+<!-- ===================== NAVIGATION MENU ===================== -->
+<nav>
+  <button class="menu-btn" id="menuBtn">Menu ☰</button>
+  <div class="menu-panel" id="menuPanel">
+    <!-- Links to different sections of the Flask application -->
+    <a href="{{ url_for('form') }}">Carbon estimator</a>
+    <a href="{{ url_for('this_project') }}">This project</a>
+    <a href="{{ url_for('methodology') }}">Methodology</a>
+    <a href="{{ url_for('references') }}">References</a>
+    <a href="{{ url_for('acknowledgements') }}">Acknowledgements</a>
+  </div>
+</nav>
+
+<!-- ===================== HERO SECTION ===================== -->
+<header>
+  <div class="hero">
+    <!-- Project title -->
+    <h1>SCAR</h1>
+
+    <!-- Short description of the project -->
+    <p>
+      Scenarios for Carbon Assessment in Research.  
+      A digital tool designed to measure, visualise and question  
+      the environmental impact of scientific research projects.
+    </p>
+
+    <!-- Call-to-action button -->
+    <a href="{{ url_for('form') }}">Start the assessment</a>
+  </div>
+</header>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  &copy; <span id="year"></span> SCAR — Manon Lasfargue, Université PSL
+</footer>
+
+<script>
+/* ===================== DYNAMIC YEAR ===================== */
+/* Automatically update the year in the footer */
+document.getElementById("year").textContent = new Date().getFullYear();
+
+/* ===================== MENU INTERACTION ===================== */
+/* Toggle the menu panel when clicking the button */
+const btn = document.getElementById("menuBtn");
+const panel = document.getElementById("menuPanel");
+
+btn.addEventListener("click", (e) => {
+  e.stopPropagation();
+  panel.classList.toggle("open");
+});
+
+/* Close the menu when clicking outside */
+document.addEventListener("click", () => {
+  panel.classList.remove("open");
+});
+</script>
+
+</body>
+</html>

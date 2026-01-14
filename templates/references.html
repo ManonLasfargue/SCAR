@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ===================== METADATA ===================== -->
+  <meta charset="UTF-8">
+  <title>SCAR – References & Sources</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- Google font used across the page -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+  /* ===================== CSS VARIABLES ===================== */
+  :root{
+    --primary:#2e7d32;
+    --secondary:#1b5e20;
+    --overlay:rgba(0,0,0,.65);
+    --card-bg:rgba(255,255,255,.96);
+  }
+
+  /* ===================== GLOBAL PAGE STYLING ===================== */
+  body{
+    font-family:"Roboto Slab",serif;
+    margin:0;
+    background-image:url("{{ url_for('static', filename='scar.png') }}");
+    background-size:cover;
+    background-attachment:fixed;
+    color:#222;
+  }
+
+  /* Dark overlay to ensure readability */
+  body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    background:var(--overlay);
+    z-index:0;
+  }
+
+  /* ===================== MAIN CONTENT CARD ===================== */
+  main{
+    position:relative;
+    z-index:1;
+    max-width:950px;
+    margin:100px auto;
+    background:var(--card-bg);
+    padding:70px 70px 80px;
+    border-radius:18px;
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
+  }
+
+  /* Page title */
+  h1{
+    text-align:center;
+    color:var(--primary);
+    margin-bottom:15px;
+  }
+
+  /* Introductory subtitle */
+  .subtitle{
+    text-align:center;
+    color:#444;
+    max-width:760px;
+    margin:0 auto 55px;
+    line-height:1.8;
+    font-size:1.05rem;
+  }
+
+  /* ===================== ACCORDION COMPONENT ===================== */
+  /* Used to organise references into thematic sections */
+  .accordion{
+    border-top:1px solid #ddd;
+  }
+
+  .accordion-item{
+    border-bottom:1px solid #ddd;
+  }
+
+  /* Clickable accordion headers */
+  .accordion-header{
+    cursor:pointer;
+    padding:22px 10px;
+    font-weight:700;
+    font-size:1.05rem;
+    color:var(--secondary);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+
+  .accordion-header:hover{
+    color:var(--primary);
+  }
+
+  /* Hidden content by default */
+  .accordion-content{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .5s ease;
+  }
+
+  .accordion-content-inner{
+    padding:0 10px 30px;
+    color:#444;
+    line-height:1.9;
+    font-size:0.96rem;
+  }
+
+  /* Expanded accordion state */
+  .accordion-item.active .accordion-content{
+    max-height:3000px;
+  }
+
+  /* Arrow indicator */
+  .arrow{
+    font-size:1.2rem;
+    transition:transform .3s ease;
+  }
+
+  .accordion-item.active .arrow{
+    transform:rotate(90deg);
+  }
+
+  /* ===================== LIST STYLING ===================== */
+  ul{
+    margin-top:15px;
+    padding-left:20px;
+  }
+  li{
+    margin-bottom:10px;
+  }
+
+  /* ===================== HIGHLIGHT BOX ===================== */
+  /* Used to emphasise key methodological or conceptual points */
+  .highlight{
+    background:#f3f6f4;
+    border-left:4px solid var(--primary);
+    padding:18px 22px;
+    margin:25px 0;
+    font-size:0.95rem;
+    font-style:italic;
+  }
+
+  /* ===================== NAVIGATION ===================== */
+  .nav-buttons{
+    margin-top:70px;
+    display:flex;
+    justify-content:center;
+    gap:18px;
+    flex-wrap:wrap;
+  }
+
+  .nav-btn{
+    background:var(--primary);
+    color:white;
+    text-decoration:none;
+    padding:14px 28px;
+    border-radius:10px;
+    font-weight:600;
+    font-size:1rem;
+    transition:all .25s ease;
+  }
+
+  .nav-btn:hover{
+    background:var(--secondary);
+    transform:translateY(-2px);
+  }
+  </style>
+</head>
+
+<body>
+
+<!-- ===================== MAIN CONTENT ===================== -->
+<main>
+
+  <!-- ===================== PAGE TITLE ===================== -->
+  <h1>References & sources</h1>
+
+  <!-- General explanation of the references page -->
+  <p class="subtitle">
+    SCAR is grounded in existing scientific work, institutional tools, and academic literature.
+    This page documents the main intellectual, methodological, and empirical sources
+    that informed the design of the project.
+  </p>
+
+  <!-- ===================== ACCORDION SECTIONS ===================== -->
+  <div class="accordion">
+
+    <!-- ===================== 1. LABO 1.5 ===================== -->
+    <div class="accordion-item">
+      <div class="accordion-header">
+        1. Labo 1.5 – A major source of inspiration
+        <span class="arrow">›</span>
+      </div>
+      <div class="accordion-content">
+        <div class="accordion-content-inner">
+          <p>
+            The development of SCAR was largely inspired by the work of
+            <strong>Labo 1.5</strong>, a research collective dedicated to measuring
+            and reducing the environmental footprint of research activities.
+          </p>
+          <p>
+            The methodological rigor, transparency, and reflexive positioning
+            adopted by Labo 1.5 have been particularly influential for this project.
+          </p>
+          <div class="highlight">
+            I had the opportunity to meet and exchange with researchers involved
+            in Labo 1.5, which proved extremely enriching for the conceptual
+            and methodological development of SCAR.
+          </div>
+          <p>
+            SCAR does not seek to replicate existing tools, but rather to extend
+            their spirit to the scale of individual research projects.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== 2. EMISSION FACTORS ===================== -->
+    <div class="accordion-item">
+      <div class="accordion-header">
+        2. Emission factors and carbon data
+        <span class="arrow">›</span>
+      </div>
+      <div class="accordion-content">
+        <div class="accordion-content-inner">
+          <p>
+            All emission factors used in SCAR are drawn from
+            <strong>public, documented, and widely used databases</strong>.
+          </p>
+          <ul>
+            <li>
+              <strong>ADEME – Base Carbone®</strong><br>
+              Reference source for mobility, energy consumption, food,
+              and accommodation-related emissions.
+            </li>
+            <li>
+              <strong>GES 1point5</strong><br>
+              Methodological framework specifically designed for
+              assessing the carbon footprint of research activities.
+            </li>
+            <li>
+              <strong>DEFRA (UK Department for Environment, Food & Rural Affairs)</strong><br>
+              Complementary factors used for cross-checking and international consistency.
+            </li>
+          </ul>
+          <p>
+            Factors are expressed in kgCO₂e per unit and applied uniformly
+            to ensure internal consistency and comparability.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== 3. SCENARIOS ===================== -->
+    <div class="accordion-item">
+      <div class="accordion-header">
+        3. Scenario construction and reduction hypotheses
+        <span class="arrow">›</span>
+      </div>
+      <div class="accordion-content">
+        <div class="accordion-content-inner">
+          <p>
+            The reduction scenarios implemented in SCAR are based on
+            <strong>documented mitigation levers</strong>.
+          </p>
+          <ul>
+            <li>Modal substitution based on air vs rail comparisons.</li>
+            <li>Digital sobriety informed by ICT and data centre literature.</li>
+            <li>Utility-aware scenarios inspired by proportionality debates.</li>
+          </ul>
+          <div class="highlight">
+            Scenarios are not forecasts nor prescriptions,
+            but exploratory tools intended to support informed discussion.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================== 4. SCIENTIFIC LITERATURE ===================== -->
+    <div class="accordion-item">
+      <div class="accordion-header">
+        4. Scientific literature
+        <span class="arrow">›</span>
+      </div>
+      <div class="accordion-content">
+        <div class="accordion-content-inner">
+          <p>
+            SCAR is informed by a growing body of scientific literature
+            on academic travel, digital infrastructures, and food-related emissions.
+          </p>
+          <ul>
+            <li>Wynes & Donner (2018) – Academic travel emissions.</li>
+            <li>Spinellis & Giannikas (2012) – Cloud computing adoption.</li>
+            <li>Jones (2019) – Data centres and electricity demand.</li>
+            <li>Lannelongue et al. (2021) – Green algorithms.</li>
+            <li>Carlsson-Kanyama & González (2009) – Food and climate.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===================== NAVIGATION ===================== -->
+  <div class="nav-buttons">
+    <a href="{{ url_for('home') }}" class="nav-btn">← Back to home</a>
+    <a href="{{ url_for('form') }}" class="nav-btn">Carbon estimator</a>
+  </div>
+
+</main>
+
+<!-- ===================== ACCORDION SCRIPT ===================== -->
+<script>
+  /* Toggle accordion sections when clicking on headers */
+  document.querySelectorAll(".accordion-header").forEach(header=>{
+    header.addEventListener("click",()=>{
+      header.parentElement.classList.toggle("active");
+    });
+  });
+</script>
+
+</body>
+</html>

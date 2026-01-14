@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- ===================== METADATA & PAGE SETUP ===================== -->
+  <meta charset="UTF-8">
+  <title>SCAR – Carbon Footprint Estimator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Google font used throughout the interface -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ===================== CSS VARIABLES ===================== */
+    /* Centralised color and layout variables */
+    :root {
+      --primary: #2e7d32;
+      --secondary: #1b5e20;
+      --overlay: rgba(0, 0, 0, 0.65);
+      --card-bg: rgba(255, 255, 255, 0.96);
+    }
+
+    /* ===================== GLOBAL PAGE STYLING ===================== */
+    body {
+      font-family: "Roboto Slab", serif;
+      margin: 0;
+      background-image: url("{{ url_for('static', filename='scar.png') }}");
+      background-size: cover;
+      background-position: center center;
+      background-attachment: fixed;
+      color: #1a1a1a;
+      overflow-x: hidden;
+    }
+
+    /* Dark overlay to ensure readability over background image */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background: var(--overlay);
+      z-index: 0;
+    }
+
+    /* ===================== PAGE HEADER ===================== */
+    header {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      color: white;
+      padding: 100px 20px 60px;
+      text-shadow: 0 3px 15px rgba(0, 0, 0, 0.5);
+    }
+
+    header h1 {
+      font-size: 2.8rem;
+      margin-bottom: 15px;
+    }
+
+    header p {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #e8f5e9;
+      max-width: 750px;
+      margin: 0 auto;
+    }
+
+    /* ===================== FORM CONTAINER ===================== */
+    /* Card-like container holding the full assessment form */
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 900px;
+      margin: 60px auto 100px;
+      background: var(--card-bg);
+      padding: 55px 65px;
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    }
+
+    /* Section titles for each emission category */
+    h2.section-title {
+      color: var(--secondary);
+      border-left: 5px solid var(--primary);
+      padding-left: 10px;
+      margin-top: 55px;
+      margin-bottom: 18px;
+      font-size: 1.4rem;
+    }
+
+    /* ===================== FORM ELEMENTS ===================== */
+    label {
+      display: block;
+      margin: 14px 0 4px;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    /* Explanatory text below labels */
+    .hint {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 400;
+      color: #555;
+      margin-top: 2px;
+      line-height: 1.5;
+    }
+
+    /* Input fields for numeric data and sliders */
+    input[type="number"], input[type="range"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    /* Main submission button */
+    button {
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      padding: 16px 35px;
+      font-size: 1.15rem;
+      font-weight: 600;
+      border-radius: 10px;
+      cursor: pointer;
+      display: block;
+      margin: 45px auto 0;
+    }
+
+    button:hover {
+      background-color: var(--secondary);
+      transform: translateY(-3px);
+    }
+
+    /* Secondary navigation button */
+    .btn {
+      background-color: var(--primary);
+      color: white;
+      padding: 14px 30px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      display: inline-block;
+      transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: var(--secondary);
+      transform: translateY(-3px);
+    }
+
+    /* ===================== FOOTER ===================== */
+    footer {
+      text-align: center;
+      color: white;
+      font-size: 0.9rem;
+      margin-bottom: 40px;
+      opacity: 0.85;
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- ===================== PAGE INTRODUCTION ===================== -->
+<header>
+  <h1>SCAR – Carbon Footprint Estimator</h1>
+  <p>
+    A structured assessment of the carbon footprint of a research project.<br>
+    Enter distances (km), durations (hours), or quantities as indicated below.
+  </p>
+</header>
+
+<!-- ===================== MAIN FORM ===================== -->
+<div class="container">
+<form action="{{ url_for('results') }}" method="POST">
+
+  <!-- ===================== MOBILITY INPUTS ===================== -->
+  <h2 class="section-title">Mobility (distance in km)</h2>
+
+  <label>Short flights
+    <span class="hint">Flights under 500 km (e.g. domestic or neighbouring-country flights)</span>
+  </label>
+  <input type="number" name="flight_short" min="0">
+
+  <label>Medium flights
+    <span class="hint">Flights between 500 and 1500 km (e.g. intra-European flights)</span>
+  </label>
+  <input type="number" name="flight_medium" min="0">
+
+  <label>Long flights
+    <span class="hint">Flights over 1500 km (intercontinental travel)</span>
+  </label>
+  <input type="number" name="flight_long" min="0">
+
+  <label>Train (high-speed)
+    <span class="hint">e.g. TGV or equivalent high-speed rail</span>
+  </label>
+  <input type="number" name="train_tgv" min="0">
+
+  <label>Train (regional)
+    <span class="hint">e.g. TER or local rail services</span>
+  </label>
+  <input type="number" name="train_ter" min="0">
+
+  <label>Car – diesel
+    <span class="hint">Distance travelled alone or with limited sharing</span>
+  </label>
+  <input type="number" name="car_diesel" min="0">
+
+  <label>Car – petrol
+    <span class="hint">Distance travelled alone or with limited sharing</span>
+  </label>
+  <input type="number" name="car_essence" min="0">
+
+  <label>Carpooling
+    <span class="hint">Shared car trips (average occupancy)</span>
+  </label>
+  <input type="number" name="carpool" min="0">
+
+  <label>Bus / coach</label>
+  <input type="number" name="bus" min="0">
+
+  <label>Metro / tram</label>
+  <input type="number" name="metro" min="0">
+
+  <!-- ===================== ENERGY INPUTS ===================== -->
+  <h2 class="section-title">Energy consumption (kWh)</h2>
+
+  <label>Electricity
+    <span class="hint">Electricity used in offices, labs, or research facilities</span>
+  </label>
+  <input type="number" name="electricity" min="0">
+
+  <label>Gas</label>
+  <input type="number" name="gas" min="0">
+
+  <label>Fuel oil</label>
+  <input type="number" name="fioul" min="0">
+
+  <label>District heating network</label>
+  <input type="number" name="heating_network" min="0">
+
+  <!-- ===================== DIGITAL INPUTS ===================== -->
+  <h2 class="section-title">Digital & computing resources</h2>
+
+  <label>Laptops
+    <span class="hint">Number of laptops mobilised over the project duration</span>
+  </label>
+  <input type="number" name="laptops" min="0">
+
+  <label>Desktops
+    <span class="hint">Fixed desktop computers</span>
+  </label>
+  <input type="number" name="desktop" min="0">
+
+  <label>External screens</label>
+  <input type="number" name="screen" min="0">
+
+  <label>Server usage (hours)
+    <span class="hint">
+      Total computing or hosting time (e.g. model runs, HPC jobs, continuous hosting)
+    </span>
+  </label>
+  <input type="number" name="server" min="0">
+
+  <label>Cloud computing (hours)</label>
+  <input type="number" name="cloud" min="0">
+
+  <label>Video conferencing (hours)</label>
+  <input type="number" name="video_conf" min="0">
+
+  <label>Emails sent</label>
+  <input type="number" name="email" min="0">
+
+  <label>Large Language Model usage (hours)
+    <span class="hint">Time spent using generative AI tools (chatbots, assistants)</span>
+  </label>
+  <input type="number" name="llm_usage" min="0">
+
+  <label>AI model training (hours)
+    <span class="hint">Training or fine-tuning of machine learning models</span>
+  </label>
+  <input type="number" name="ai_training" min="0">
+
+  <!-- ===================== FOOD INPUTS ===================== -->
+  <h2 class="section-title">Food (meals consumed during the project)</h2>
+
+  <label>Red meat meals
+    <span class="hint">Meals including beef or lamb (fieldwork, conferences)</span>
+  </label>
+  <input type="number" name="meat_meals" min="0">
+
+  <label>White meat meals</label>
+  <input type="number" name="white_meat_meals" min="0">
+
+  <label>Vegetarian meals</label>
+  <input type="number" name="veg_meals" min="0">
+
+  <label>Coffee (cups)</label>
+  <input type="number" name="coffee" min="0">
+
+  <!-- ===================== EVENTS & ACCOMMODATION ===================== -->
+  <h2 class="section-title">Accommodation & events</h2>
+
+  <label>Hotel nights</label>
+  <input type="number" name="hotel_night" min="0">
+
+  <label>Airbnb nights</label>
+  <input type="number" name="airbnb_night" min="0">
+
+  <label>Conference days</label>
+  <input type="number" name="conference_day" min="0">
+
+  <label>Conference meals</label>
+  <input type="number" name="conference_meal" min="0">
+
+  <!-- ===================== MISSION UTILITY ===================== -->
+  <!-- Subjective indicator used for contextual analysis -->
+  <h2 class="section-title">Mission usefulness</h2>
+
+  <input type="range" name="mission_utility" min="1" max="10" value="5"
+         oninput="utilityValue.textContent=this.value">
+
+  <p style="text-align:center;">
+    Selected level: <strong><span id="utilityValue">5</span>/10</strong>
+  </p>
+
+  <p class="hint" style="max-width:650px;margin:10px auto;text-align:center;">
+    This indicator does not justify emissions.
+    It contextualises them by linking carbon costs to expected scientific value,
+    learning outcomes, or societal impact.
+  </p>
+
+  <!-- Navigation back to the home page -->
+  <div style="text-align:center;margin-top:30px;">
+    <a href="{{ url_for('home') }}" class="btn">← Back to Home</a>
+  </div>
+
+  <!-- Form submission -->
+  <button type="submit">Calculate emissions</button>
+</form>
+</div>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  &copy; <span id="year"></span> SCAR — Manon Lasfargue
+</footer>
+
+<script>
+  /* Automatically update the year in the footer */
+  document.getElementById("year").textContent = new Date().getFullYear();
+</script>
+
+</body>
+</html>

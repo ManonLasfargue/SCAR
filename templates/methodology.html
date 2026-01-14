@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SCAR – Methodology</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --primary:#2e7d32;
+  --secondary:#1b5e20;
+  --overlay:rgba(0,0,0,.65);
+  --card-bg:rgba(255,255,255,.96);
+}
+
+body{
+  font-family:"Roboto Slab",serif;
+  margin:0;
+  background-image:url("{{ url_for('static', filename='scar.png') }}");
+  background-size:cover;
+  background-attachment:fixed;
+  color:#222;
+}
+
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:var(--overlay);
+  z-index:0;
+}
+
+main{
+  position:relative;
+  z-index:1;
+  max-width:950px;
+  margin:100px auto;
+  background:var(--card-bg);
+  padding:70px 70px 80px;
+  border-radius:18px;
+  box-shadow:0 10px 30px rgba(0,0,0,.25);
+}
+
+h1{
+  text-align:center;
+  color:var(--primary);
+  margin-bottom:20px;
+}
+
+.subtitle{
+  text-align:center;
+  color:#444;
+  max-width:780px;
+  margin:0 auto 55px;
+  line-height:1.85;
+  font-size:1.05rem;
+}
+
+/* ===== Accordion ===== */
+.accordion{
+  border-top:1px solid #ddd;
+}
+
+.accordion-item{
+  border-bottom:1px solid #ddd;
+}
+
+.accordion-header{
+  cursor:pointer;
+  padding:22px 10px;
+  font-weight:700;
+  font-size:1.05rem;
+  color:var(--secondary);
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.accordion-header:hover{
+  color:var(--primary);
+}
+
+.accordion-content{
+  max-height:0;
+  overflow:hidden;
+  transition:max-height .6s ease;
+}
+
+.accordion-content-inner{
+  padding:0 10px 32px;
+  color:#444;
+  line-height:1.9;
+  font-size:0.96rem;
+}
+
+.accordion-item.active .accordion-content{
+  max-height:4000px;
+}
+
+.arrow{
+  font-size:1.2rem;
+  transition:transform .3s ease;
+}
+
+.accordion-item.active .arrow{
+  transform:rotate(90deg);
+}
+
+/* ===== Highlight ===== */
+.highlight{
+  background:#f3f6f4;
+  border-left:4px solid var(--primary);
+  padding:18px 22px;
+  margin:28px 0;
+  font-size:0.95rem;
+}
+
+/* ===== Nav ===== */
+.nav-buttons{
+  margin-top:80px;
+  display:flex;
+  justify-content:center;
+  gap:18px;
+  flex-wrap:wrap;
+}
+
+.nav-btn{
+  background:var(--primary);
+  color:white;
+  text-decoration:none;
+  padding:14px 28px;
+  border-radius:10px;
+  font-weight:600;
+  font-size:1rem;
+  transition:all .25s ease;
+}
+
+.nav-btn:hover{
+  background:var(--secondary);
+  transform:translateY(-2px);
+}
+</style>
+</head>
+
+<body>
+
+<main>
+
+<h1>Methodological framework</h1>
+
+<p class="subtitle">
+SCAR is designed as a <strong>carbon decision-support tool for research projects</strong>.
+Rather than producing exhaustive life-cycle inventories, its ambition is to make
+the environmental implications of research practices
+<strong>explicit, interpretable, and discussable</strong>,
+while remaining compatible with academic constraints and real-world decision-making.
+</p>
+
+<div class="accordion">
+
+<!-- 1 -->
+<div class="accordion-item">
+  <div class="accordion-header">
+    1. Objectives and epistemological positioning
+    <span class="arrow">›</span>
+  </div>
+  <div class="accordion-content">
+    <div class="accordion-content-inner">
+      <p>
+SCAR was conceived in response to a growing tension within contemporary academia.
+On the one hand, research increasingly addresses environmental and climate-related issues;
+on the other hand, the environmental footprint of research practices themselves
+remains poorly quantified, weakly problematised, and rarely integrated into decision-making.
+</p>
+
+<p>
+The primary objective of SCAR is therefore not to produce an exhaustive or definitive
+carbon accounting of research activities, but rather to provide an
+<strong>operational and reflexive framework</strong> allowing researchers to
+understand where emissions arise within a given project, and how these emissions relate
+to concrete scientific and organisational choices.
+</p>
+
+<p>
+From an epistemological perspective, SCAR deliberately positions itself
+between two extremes. It does not aim to reproduce the complexity of full
+Life Cycle Assessment (LCA) methodologies, which require detailed inventories,
+specialised expertise, and extensive data that are rarely available at the project level.
+Conversely, it avoids purely symbolic or declarative approaches that would
+reduce carbon assessment to generic averages disconnected from actual practices.
+</p>
+
+<p>
+SCAR is thus best understood as a <strong>decision-support and discussion tool</strong>.
+Its purpose is to inform choices when several research configurations are possible,
+to identify structural emission drivers, and to make trade-offs explicit.
+It is not designed to rank projects, disciplines, or individuals, nor to prescribe
+a single optimal research model.
+</p>
+
+<div class="highlight">
+SCAR answers the following question:
+<em>“Given a research objective, which activities generate emissions, and which
+levers can realistically be mobilised without undermining scientific integrity?”</em>
+</div>
+
+    </div>
+  </div>
+</div>
+
+<!-- 2 -->
+<div class="accordion-item">
+  <div class="accordion-header">
+    2. Scope definition and system boundaries
+    <span class="arrow">›</span>
+  </div>
+  <div class="accordion-content">
+    <div class="accordion-content-inner">
+      <p>
+Defining system boundaries is a central methodological step in any carbon assessment.
+In SCAR, these boundaries are intentionally restricted in order to maintain
+both analytical relevance and practical usability.
+</p>
+
+<p>
+Only emission sources that satisfy two criteria are included:
+first, they must represent a <strong>non-negligible contribution</strong> to the overall
+carbon footprint of research activities; second, they must be
+<strong>meaningfully influenced by project-level decisions</strong>.
+</p>
+
+<p>
+Based on these criteria, SCAR includes several major categories of emissions:
+mobility (air, rail, and road transport), energy use during missions,
+digital practices (devices, servers, cloud computing, AI usage),
+food consumption associated with research travel, and accommodation
+related to conferences or fieldwork.
+</p>
+
+<p>
+Conversely, emissions embedded in long-term institutional infrastructure
+(such as building construction, campus heating systems, or central administrative services)
+are excluded. While these emissions are significant at the scale of institutions,
+they cannot be robustly attributed to individual projects without introducing
+arbitrary allocation rules that would obscure rather than clarify responsibility.
+</p>
+
+<p>
+This boundary choice reflects a methodological trade-off:
+SCAR sacrifices exhaustiveness in order to preserve interpretability
+and to focus attention on levers that researchers can realistically discuss,
+negotiate, or influence.
+</p>
+
+    </div>
+  </div>
+</div>
+
+<!-- 3 -->
+<div class="accordion-item">
+  <div class="accordion-header">
+    3. Emission factors and data sources
+    <span class="arrow">›</span>
+  </div>
+  <div class="accordion-content">
+    <div class="accordion-content-inner">
+      <p>
+All numerical estimates produced by SCAR rely on emission factors expressed
+in kilograms of CO₂ equivalent (kgCO₂e) per unit of activity.
+These factors are drawn from publicly available and widely recognised sources,
+primarily national databases produced by ADEME and methodological frameworks
+such as GES 1point5.
+</p>
+
+<p>
+Depending on the activity considered, emission factors may be expressed per kilometre
+travelled, per hour of use, per device-year, or per meal.
+For example, air travel emissions are computed as the product of travelled distance
+and a distance-specific emission factor, while digital equipment emissions are
+annualised over an estimated lifespan and allocated to project usage.
+</p>
+
+<p>
+Importantly, emission factors are treated as <strong>order-of-magnitude estimates</strong>.
+SCAR does not claim to measure emissions with high precision, as such precision
+would be illusory given uncertainties in usage patterns, technological heterogeneity,
+and reporting practices.
+</p>
+
+<div class="highlight">
+Precision is intentionally traded for transparency:
+the goal is not to produce exact numbers, but to provide
+robust and interpretable approximations.
+</div>
+
+    </div>
+  </div>
+</div>
+
+<!-- 4 -->
+<div class="accordion-item">
+  <div class="accordion-header">
+    4. Calculation logic and aggregation
+    <span class="arrow">›</span>
+  </div>
+  <div class="accordion-content">
+    <div class="accordion-content-inner">
+      <p>
+The computation logic implemented in SCAR follows a deliberately simple and transparent structure.
+For each emission category, user-reported activity data are multiplied
+by the corresponding emission factor.
+</p>
+
+<p>
+This yields a set of category-level emissions, each expressed in kgCO₂e.
+The total carbon footprint of the project is then computed as the sum
+of all category-level emissions.
+</p>
+
+<p>
+Only categories with non-zero emissions are displayed in the results.
+This design choice avoids visual clutter and allows dominant emission drivers
+to be immediately identified.
+</p>
+
+<p>
+No weighting, normalisation, or optimisation procedure is applied.
+All emissions are treated symmetrically, reflecting the physical equivalence
+of CO₂e regardless of their source.
+</p>
+
+  </div>
+</div>
+
+<!-- 5 -->
+<!-- SCENARIOS -->
+<div class="accordion-item">
+  <div class="accordion-header">
+    5. Scenario construction and interpretation
+    <span class="arrow">›</span>
+  </div>
+
+  <div class="accordion-content">
+    <div class="accordion-content-inner">
+
+      <p>
+        Scenarios constitute a central analytical component of SCAR. They are not designed
+        to predict future emissions, nor to prescribe mandatory reduction targets.
+        Instead, they function as <strong>counterfactual explorations</strong>: each scenario
+        asks how the carbon footprint of a given research project would change if a limited
+        set of practices were modified, all other parameters being held constant.
+      </p>
+
+      <p>
+        From a methodological perspective, scenarios are constructed by applying
+        <strong>conservative adjustment coefficients</strong> to selected emission categories
+        in the baseline configuration. The baseline footprint serves as a reference point,
+        and each scenario modifies only a subset of activities. This ensures that changes
+        in total emissions can be directly attributed to the simulated transformation,
+        rather than to unrelated assumptions.
+      </p>
+
+      <div class="highlight">
+        Scenario results quantify <strong>relative sensitivity</strong>, not performance.
+        They indicate where emissions are responsive to change, not where reductions are
+        required.
+      </div>
+
+      <h4>Modal substitution scenario</h4>
+
+      <p>
+        The modal substitution scenario focuses exclusively on <strong>mobility-related
+        emissions</strong>, which often constitute a significant share of the carbon
+        footprint in projects involving fieldwork, conferences, or international collaboration.
+      </p>
+
+      <p>
+        Computationally, this scenario applies reduction factors to high-carbon transport
+        modes—primarily short- and medium-haul flights—by partially reallocating them to
+        lower-carbon alternatives such as rail transport. Importantly, the scenario does
+        <strong>not eliminate travel</strong> and does not assume unrealistic behavioural
+        change. Travel volumes remain constant; only transport modes are modified where
+        substitution is technically and organisationally plausible.
+      </p>
+
+      <p>
+        The resulting percentage reduction shown in the results table represents the share
+        of baseline emissions attributable to avoidable transport intensity. A high reduction
+        value indicates that mobility constitutes a structurally important and potentially
+        adjustable component of the project’s footprint.
+      </p>
+
+      <h4>Digital sobriety scenario</h4>
+
+      <p>
+        The digital sobriety scenario addresses emissions related to
+        <strong>computational infrastructure and digital practices</strong>, including
+        servers, cloud services, data storage, and intensive computing tasks.
+      </p>
+
+      <p>
+        Rather than assuming radical technological change, this scenario simulates
+        <strong>moderate efficiency gains</strong>. These include reduced server
+        over-provisioning, shorter data retention periods, improved task scheduling,
+        or the pooling of computational resources at the laboratory or institutional level.
+      </p>
+
+      <p>
+        Methodologically, proportional reductions are applied to digital emission categories,
+        while all non-digital activities remain unchanged. The percentage reduction reflects
+        the extent to which the project’s footprint depends on <em>digital intensity choices</em>
+        rather than on unavoidable scientific requirements.
+      </p>
+
+      <h4>Utility-aware scenario</h4>
+
+      <p>
+        The utility-aware scenario introduces an explicit reflection on
+        <strong>proportionality</strong>. It does not evaluate the legitimacy of the research
+        project, nor does it compare projects or disciplines. Instead, it explores how
+        emissions might be contextualised when research activities are weighted by their
+        perceived scientific or societal usefulness.
+      </p>
+
+      <p>
+        From a computational standpoint, selected emission categories are modulated according
+        to the utility score provided by the user. Higher utility scores result in smaller
+        relative adjustments, reflecting the idea that emissions associated with highly
+        valuable activities may be less negotiable. Lower scores introduce stronger
+        proportional constraints.
+      </p>
+
+      <p>
+        The percentage reduction associated with this scenario should therefore be interpreted
+        as an <strong>analytical illustration</strong> rather than a recommendation. It
+        highlights how carbon considerations can be integrated into strategic reflection
+        without reducing research value to a single numerical indicator.
+      </p>
+
+      <div class="highlight">
+        Taken together, scenarios in SCAR are designed to support
+        <strong>informed, context-sensitive decision-making</strong>, rather than optimisation
+        or benchmarking.
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- 6 -->
+<div class="accordion-item">
+  <div class="accordion-header">
+    6. From results to PDF reporting
+    <span class="arrow">›</span>
+  </div>
+  <div class="accordion-content">
+    <div class="accordion-content-inner">
+      <p>
+Results produced by SCAR should always be interpreted in context.
+They depend on assumptions, reporting choices, and project-specific constraints,
+and should therefore be understood as <strong>situated estimates</strong>.
+</p>
+
+<p>
+The tool does not attempt to evaluate the legitimacy, relevance,
+or desirability of research activities.
+Nor does it aim to minimise emissions at all costs.
+Scientific objectives, epistemic diversity, and academic freedom
+remain central considerations.
+</p>
+
+<p>
+Ultimately, SCAR is designed to support informed discussion rather than judgement.
+Its value lies in its ability to make implicit trade-offs explicit,
+and to provide a shared quantitative basis for dialogue between researchers,
+institutions, and funding bodies.
+</p>
+
+<div class="highlight">
+SCAR is a tool for <strong>understanding, reflexivity, and collective discussion</strong>,
+not for ranking or sanctioning.
+</div>
+
+    </div>
+  </div>
+</div>
+
+<!-- 7 -->
+<div class="accordion-item">
+  <div class="accordion-header">
+    7. Interpretation, limits, and responsible use
+    <span class="arrow">›</span>
+  </div>
+  <div class="accordion-content">
+    <div class="accordion-content-inner">
+      <p>
+        SCAR outputs should be interpreted as <strong>context-dependent estimates</strong>.
+        Results depend on assumptions, reporting choices, and project-specific constraints.
+      </p>
+      <p>
+        The tool does not evaluate the legitimacy or desirability of research activities,
+        nor does it attempt to optimise emissions at all costs.
+      </p>
+      <div class="highlight">
+        SCAR is a tool for <strong>understanding and discussion</strong>,
+        not for judgement or ranking.
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="nav-buttons">
+  <a href="{{ url_for('home') }}" class="nav-btn">← Back to home</a>
+  <a href="{{ url_for('form') }}" class="nav-btn">Carbon estimator</a>
+</div>
+
+</main>
+
+<script>
+document.querySelectorAll(".accordion-header").forEach(header=>{
+  header.addEventListener("click",()=>{
+    header.parentElement.classList.toggle("active");
+  });
+});
+</script>
+
+</body>
+</html>
